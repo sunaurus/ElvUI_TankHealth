@@ -12,6 +12,11 @@ end
 
 function TH:Calculate_Druid()
 
+    local rage = UnitPower("player")
+    if rage < 10 then
+        return 0
+    end
+
     -- Stat multipliers
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
     local versatilityMulti = 1 + (versatility / 100)

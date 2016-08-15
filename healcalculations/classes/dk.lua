@@ -11,8 +11,10 @@ local function GetArtifactModifier()
 end
 
 function TH:Calculate_DK()
-
-
+    local rpower = UnitPower("player")
+    if rpower < 45 then
+        return 0
+    end
     -- Stat multipliers
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
     local versatilityMulti = 1 + (versatility / 100)
