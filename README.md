@@ -14,7 +14,6 @@ The heal spell that is used depends on the class:
 
 - Implement healing calculations for:
   - DK
-  - Druid
   - Monk
   - Paladin
   - Warrior

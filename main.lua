@@ -243,6 +243,10 @@ function TH:Initialize()
     local p = E.UnitFrames.player
     p.HealPrediction.tankHealBar = TH.Construct()
     p:RegisterEvent('UNIT_POWER', TH.Override)
+    if select(2, UnitClass("unit")) == "DRUID" then
+        TH.receivedDamage = {}
+        p:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", TH.TrackDamage)
+    end
     TH:Configure()
     TH:Update()
     p.HealPrediction.Override = TH.Override
