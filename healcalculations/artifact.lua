@@ -16,7 +16,7 @@ function TH:GetArtifactMultiplier()
     local equippedArtifact = a.GetEquippedArtifactInfo()
 
     if not artifactFuncs[equippedArtifact] then
-        return multiplier
+        return 1
     end
 
 
