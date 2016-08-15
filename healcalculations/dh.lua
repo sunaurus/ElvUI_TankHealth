@@ -19,14 +19,7 @@ function TH:Calculate_DH()
     local artifactMultiplr = TH:GetArtifactMultiplier()
 
     -- Cooldown multipliers
-    local healMultiplr = 1
-    if UnitAura("player", "Guardian Spirit") then
-        healMultiplr = healMultiplr + 0.4
-    end
-
-    if UnitAura("player", "Divine Hymn") then
-        healMultiplr = healMultiplr + 0.1
-    end
+    local healMultiplr = TH:GetCooldownMultiplier()
 
     -- Soul Fragments healing
     local fragments = 0

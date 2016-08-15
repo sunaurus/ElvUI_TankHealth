@@ -7,6 +7,7 @@
 
 main.lua
 healcalculations/artifact.lua
+healcalculations/cooldowns.lua
 healcalculations/dh.lua
 healcalculations/dk.lua
 healcalculations/druid.lua
