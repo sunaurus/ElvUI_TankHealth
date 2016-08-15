@@ -1,19 +1,16 @@
 --Code modified from WA by MightBeGiant
 --http://www.mmo-champion.com/threads/1984610-Demon-Hunter-Weak-Auras-Thread?p=41713755&viewfull=1#post41713755
-
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
 
 
-function TH:Calculate_DH_Artifact(a)
-    local devourSoulsRank = select(3, a.GetPowerInfo(1233))
-    local tormentedSoulsRank = select(3, a.GetPowerInfo(1328))
-
+local function GetArtifactMultiplier()
+    local devourSoulsRank = TH:GetArtifactTraitRank(1233)
+    local tormentedSoulsRank = TH:GetArtifactTraitRank(1328)
     -- Devour souls multiplier is 3% * rank
     local multiplier = 1 + devourSoulsRank * 0.03
     -- Tormented Souls multiplier is 10% * rank
     multiplier = multiplier * (1 + tormentedSoulsRank * 0.1)
-
     return multiplier
 end
 
@@ -29,7 +26,7 @@ function TH:Calculate_DH()
     local versatilityMP = 1 + (versatility / 100)
 
     -- Artifact trait multipliers
-    local artifactMultiplr = TH:GetArtifactMultiplier()
+    local artifactMultiplr = GetArtifactMultiplier()
 
     -- Cooldown multipliers
     local healMultiplr = TH:GetCooldownMultiplier()

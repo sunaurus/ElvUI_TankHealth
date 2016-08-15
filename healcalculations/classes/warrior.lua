@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
 
-function TH:Calculate_Warrior_Artifact(a)
+local function GetArtifactMultiplier()
     --unimplemented
     return 1
 end
