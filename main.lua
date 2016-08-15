@@ -206,6 +206,47 @@ end
 
 
 
+function TH:TrackDamage(event, time, subevent, ...)
+    --Code adapted from weakaura by Hamsda (with permission)
+    --https://wago.io/profile/Hamsda
+    --target = player
+    if select(6, ...) == UnitGUID("player") then
+
+        --set selection offset to amount for baseline SWING_DAMAGE
+        local offset = 10
+
+        --handle SPELL_ABSORBED events
+        if subevent == "SPELL_ABSORBED" then
+
+            --if a spell gets absorbed, there are 3 additional parameters regarding which spell got absorbed, so move the offset 3 more places
+            if GetSpellInfo((select(offset, ...))) == (select(offset + 1, ...)) then
+                offset = offset + 3
+            end
+
+            --absorb value is 7 places further
+            offset = offset + 7
+            TH.receivedDamage[time] = select(offset, ...)
+
+            --handle regular XYZ_DAMAGE events
+        elseif subevent:find("_DAMAGE") then
+
+            --don't include environmental damage (like falling etc)
+            if not subevent:find("ENVIRONMENTAL") then
+
+                --move offset by 3 places for spell info for RANGE_ and SPELL_ prefixes
+                if subevent:find("SPELL") then
+                    offset = offset + 3
+                elseif subevent:find("RANGE") then
+                    offset = offset + 3
+                end
+
+                TH.receivedDamage[time] = select(offset, ...)
+            end
+        end
+    end
+
+end
+
 
 function TH:Initialize()
     local p = E.UnitFrames.player
