@@ -1,4 +1,4 @@
---Code modified from WA by MightBeGiant
+--Code adapted from weakaura by MightBeGiant (with permission)
 --http://www.mmo-champion.com/threads/1984610-Demon-Hunter-Weak-Auras-Thread?p=41713755&viewfull=1#post41713755
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
@@ -23,13 +23,10 @@ function TH:Calculate_DH()
         return 0
     end
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
-    local versatilityMP = 1 + (versatility / 100)
+    local versatilityMulti = 1 + (versatility / 100)
 
     -- Artifact trait multipliers
-    local artifactMultiplr = GetArtifactMultiplier()
-
-    -- Cooldown multipliers
-    local healMultiplr = TH:GetCooldownMultiplier()
+    local artifactMulti = GetArtifactMultiplier()
 
     -- Soul Fragments healing
     local fragments = 0
@@ -37,16 +34,16 @@ function TH:Calculate_DH()
         fragments = select(4, UnitBuff("player", "Soul Fragments"))
     end
 
-    local singleFragHeal = (2.5 * AP) * versatilityMP
-    local totalFragHeal = (2.5 * AP) * fragments * versatilityMP
+    local singleFragHeal = (2.5 * AP) * versatilityMulti
+    local totalFragHeal = singleFragHeal * fragments
 
     -- Soul Cleave healing
-    local cleaveHeal = ((2 * AP) * 4.5) * versatilityMP * (min(60, pain) / 60) * artifactMultiplr
-    local cleaveHealMax = ((2 * AP) * 4.5) * versatilityMP * artifactMultiplr
+    local cleaveHeal = ((2 * AP) * 4.5) * versatilityMulti * (min(60, pain) / 60) * artifactMulti
+--    local cleaveHealMax = ((2 * AP) * 4.5) * versatilityMulti * artifactMulti
 
     -- Total healing
-    local totalHeal = (totalFragHeal + cleaveHeal) * healMultiplr
-    local totalHealMax = ((singleFragHeal * 5) + cleaveHealMax) * healMultiplr
+    local totalHeal = (totalFragHeal + cleaveHeal)
+--    local totalHealMax = ((singleFragHeal * 5) + cleaveHealMax)
 
     return math.ceil(totalHeal)
 end

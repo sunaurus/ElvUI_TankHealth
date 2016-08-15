@@ -21,9 +21,6 @@ function TH:Calculate_Druid()
     -- Artifact trait multipliers
     local artifactMulti = TH:GetArtifactMultiplier()
 
-    -- Cooldown multipliers
-    local healMulti = GetCooldownMultiplier()
-
     -- Guardian of Elune
     local goeMulti = UnitBuff("player", GetSpellInfo(213680)) and 1.2 or 1
 
@@ -48,7 +45,7 @@ function TH:Calculate_Druid()
     end
 
 
-    local multiplier = versatilityMulti * artifactMulti * masteryMulti * goeMulti * lcMulti * t17Multi * t18Multi * t19Multi * healMulti
+    local multiplier = versatilityMulti * artifactMulti * masteryMulti * goeMulti * lcMulti * t17Multi * t18Multi * t19Multi
 
     -- Min healing, 5% of maxhealth:
     local minHeal = UnitHealthMax("player") * 0.05

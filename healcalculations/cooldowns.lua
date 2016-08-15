@@ -2,21 +2,19 @@ local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, Profi
 local TH = E:GetModule("TankHealth");
 
 -- Cache Globals
-local UnitAura = UnitAura
+local UnitBuff = UnitBuff
 
 function TH:GetCooldownMultiplier()
-    local multiplier = 1
-    if UnitAura("player", "Guardian Spirit") then
-        multiplier = multiplier + 0.4
-    end
 
-    if UnitAura("player", "Divine Hymn") then
-        multiplier = multiplier + 0.1
-    end
+    -- Guardian Spirit
+    local gsMulti = UnitBuff("player", GetSpellInfo(47788)) and 1.4 or 1
 
-    if UnitAura("player", "Protection of Tyr") then
-        multiplier = multiplier + 0.15
-    end
+    -- Divine Hymn
+    local dhMulti = UnitBuff("player", GetSpellInfo(64844)) and 1.1 or 1
 
-    return multiplier
+    -- Protection of Tyr
+    local potMulti = UnitBuff("player", GetSpellInfo(211210)) and 1.15 or 1
+
+
+    return gsMulti * dhMulti * potMulti
 end

@@ -43,7 +43,7 @@ end
 local function CalculateHeal()
 
     local specIndex = GetSpecialization()
-    local specId = select(1, GetSpecializationInfo(specIndex))
+    local specId = GetSpecializationInfo(specIndex)
 
     local calcFuncs = {
         [581] = TH.Calculate_DH,
@@ -113,7 +113,10 @@ function TH:Override(event, unit)
         myCurrentHealAbsorb = 0
     end
 
-    local tankHeal = min(maxHealth - health, totalAbsorb + CalculateHeal())
+    -- Cooldown multipliers
+    local healMulti = TH:GetCooldownMultiplier()
+
+    local tankHeal = min(maxHealth - health, (totalAbsorb + CalculateHeal()) * healMulti)
 
     --    print("tankHeal: " .. tankHeal)
     --    print("totalAbsorb + CalculateHeal(): " .. totalAbsorb + CalculateHeal())
