@@ -2,7 +2,7 @@
 --http://www.mmo-champion.com/threads/1984610-Demon-Hunter-Weak-Auras-Thread?p=41713755&viewfull=1#post41713755
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local TH = E:GetModule('TankHealth');
+local TH = E:GetModule("TankHealth");
 
 
 function TH:Calculate_DH_Artifact(a)

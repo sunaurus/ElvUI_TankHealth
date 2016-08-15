@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local TH = E:GetModule('TankHealth');
+local TH = E:GetModule("TankHealth");
 
 function TH:GetArtifactMultiplier()
     local u, e, a = UIParent, "ARTIFACT_UPDATE", C_ArtifactUI

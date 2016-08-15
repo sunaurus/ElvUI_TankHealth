@@ -1,5 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local TH = E:NewModule('TankHealth', 'AceHook-3.0', 'AceEvent-3.0', 'AceTimer-3.0'); --Create a plugin within ElvUI and adopt AceHook-3.0, AceEvent-3.0 and AceTimer-3.0. We can make use of these later.
+local TH = E:NewModule("TankHealth", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0"); --Create a plugin within ElvUI and adopt AceHook-3.0, AceEvent-3.0 and AceTimer-3.0. We can make use of these later.
 local EP = LibStub("LibElvUIPlugin-1.0") --We can use this to automatically insert our GUI tables when ElvUI_Config is loaded.
 local addonName, addonTable = ... --See http://www.wowinterface.com/forums/showthread.php?t=51502&p=304704&postcount=2
 
@@ -69,7 +69,7 @@ function TH:Override(event, unit)
     hp.parent = self
     if (hp.PreUpdate) then hp:PreUpdate(unit) end
 
-    local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
+    local myIncomingHeal = UnitGetIncomingHeals(unit, "player") or 0
     local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
     local totalAbsorb = UnitGetTotalAbsorbs(unit) or 0
     local myCurrentHealAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
@@ -156,7 +156,7 @@ end
 
 function TH:Construct()
 
-    local tankHealBar = CreateFrame('StatusBar', nil, E.UnitFrames.player)
+    local tankHealBar = CreateFrame("StatusBar", nil, E.UnitFrames.player)
     tankHealBar:SetStatusBarTexture(E["media"].blankTex)
     tankHealBar:SetFrameLevel(E.UnitFrames.player.Health:GetFrameLevel() - 2)
     tankHealBar:Hide()
@@ -173,8 +173,8 @@ function TH:Configure()
     local healPrediction = frame.HealPrediction
 
     if frame.db.healPrediction then
-        if not frame:IsElementEnabled('HealPrediction') then
-            frame:EnableElement('HealPrediction')
+        if not frame:IsElementEnabled("HealPrediction") then
+            frame:EnableElement("HealPrediction")
         end
 
         if not frame.USE_PORTRAIT_OVERLAY then
@@ -192,8 +192,8 @@ function TH:Configure()
         healPrediction.tankHealBar:SetStatusBarColor(c.r, c.g, c.b, c.a)
 
     else
-        if frame:IsElementEnabled('HealPrediction') then
-            frame:DisableElement('HealPrediction')
+        if frame:IsElementEnabled("HealPrediction") then
+            frame:DisableElement("HealPrediction")
         end
     end
 end
@@ -208,7 +208,7 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
 
     local orientation = frame.Health:GetOrientation()
     bar:ClearAllPoints()
-    if orientation == 'HORIZONTAL' then
+    if orientation == "HORIZONTAL" then
         bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
         bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
     else
@@ -217,7 +217,7 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
     end
 
     local totalWidth, totalHeight = frame.Health:GetSize();
-    if orientation == 'HORIZONTAL' then
+    if orientation == "HORIZONTAL" then
         bar:Width(totalWidth);
     else
         bar:Height(totalHeight);
@@ -242,7 +242,7 @@ end
 function TH:Initialize()
     local p = E.UnitFrames.player
     p.HealPrediction.tankHealBar = TH.Construct()
-    p:RegisterEvent('UNIT_POWER', TH.Override)
+    p:RegisterEvent("UNIT_POWER", TH.Override)
     if select(2, UnitClass("unit")) == "DRUID" then
         TH.receivedDamage = {}
         p:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", TH.TrackDamage)

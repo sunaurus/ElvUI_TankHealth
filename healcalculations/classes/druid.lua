@@ -2,7 +2,7 @@
 --http://www.mmo-champion.com/threads/2024876-WA2-Guardian-Frenzied-Regen-Tracker
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local TH = E:GetModule('TankHealth');
+local TH = E:GetModule("TankHealth");
 
 function TH:Calculate_Druid_Artifact(a)
     local wildfleshRank = select(3, a.GetPowerInfo(200400))
@@ -48,7 +48,7 @@ function TH:Calculate_Druid()
 
     -- Heal is only half of damage taken, plus Versatility:
     local totalHeal = (((receivedDamage / 2) * versatilityMP * artifactMultiplr) * masteryMP) * guardianOfElune * healMultiplr
-    -- Only output heal value if it's greater than MinHeal:
+    -- Only output heal value if it"s greater than MinHeal:
     if totalHeal < minHeal then
         totalHeal = minHeal
     end
@@ -58,10 +58,10 @@ end
 
 function TH:TrackDamage(timeStamp, event, ...)
 
-    if (string.find(event, '_DAMAGE')) then
+    if (string.find(event, "_DAMAGE")) then
         local _, _, _, _, _, destGUID, _, _, _, amount, sourceName, _, spellAmount = ...
-        if (destGUID == UnitGUID('player')) then
-            -- If it's a melee attack:
+        if (destGUID == UnitGUID("player")) then
+            -- If it"s a melee attack:
             if sourceName == -1 then
                 TH.receivedDamage[timeStamp] = amount
             else
