@@ -60,6 +60,14 @@ local function CalculateHeal()
     end
 end
 
+local function UpdateBar(bar, maxHealth, val)
+    if (bar) then
+        bar:SetMinMaxValues(0, maxHealth)
+        bar:SetValue(val)
+        bar:Show()
+    end
+end
+
 
 
 function TH:Override(event, unit)
@@ -68,7 +76,6 @@ function TH:Override(event, unit)
 
     local hp = self.HealPrediction
     hp.parent = self
-    if (hp.PreUpdate) then hp:PreUpdate(unit) end
 
     local myIncomingHeal = UnitGetIncomingHeals(unit, "player") or 0
     local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
@@ -76,9 +83,7 @@ function TH:Override(event, unit)
     local myCurrentHealAbsorb = UnitGetTotalHealAbsorbs(unit) or 0
     local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
 
-    local overHealAbsorb = false
     if (health < myCurrentHealAbsorb) then
-        overHealAbsorb = true
         myCurrentHealAbsorb = health
     end
 
@@ -93,12 +98,7 @@ function TH:Override(event, unit)
         otherIncomingHeal = allIncomingHeal - myIncomingHeal
     end
 
-    local overAbsorb = false
     if (health - myCurrentHealAbsorb + allIncomingHeal + totalAbsorb >= maxHealth or health + totalAbsorb >= maxHealth) then
-        if (totalAbsorb > 0) then
-            overAbsorb = true
-        end
-
 
         if (allIncomingHeal > myCurrentHealAbsorb) then
             totalAbsorb = max(0, maxHealth - (health - myCurrentHealAbsorb + allIncomingHeal))
@@ -113,46 +113,18 @@ function TH:Override(event, unit)
         myCurrentHealAbsorb = 0
     end
 
-
-
     local tankHeal = min(maxHealth - health, totalAbsorb + CalculateHeal())
 
     --    print("tankHeal: " .. tankHeal)
     --    print("totalAbsorb + CalculateHeal(): " .. totalAbsorb + CalculateHeal())
 
-    if (hp.myBar) then
-        hp.myBar:SetMinMaxValues(0, maxHealth)
-        hp.myBar:SetValue(myIncomingHeal)
-        hp.myBar:Show()
-    end
+    UpdateBar(hp.myBar, maxHealth, myIncomingHeal)
+    UpdateBar(hp.otherbar, maxHealth, otherIncomingHeal)
+    UpdateBar(hp.absorbBar, maxHealth, totalAbsorb)
+    UpdateBar(hp.healAbsorbBar, maxHealth, myCurrentHealAbsorb)
+    UpdateBar(hp.tankHealBar, maxHealth, tankHeal)
 
-    if (hp.otherBar) then
-        hp.otherBar:SetMinMaxValues(0, maxHealth)
-        hp.otherBar:SetValue(otherIncomingHeal)
-        hp.otherBar:Show()
-    end
-
-    if (hp.absorbBar) then
-        hp.absorbBar:SetMinMaxValues(0, maxHealth)
-        hp.absorbBar:SetValue(totalAbsorb)
-        hp.absorbBar:Show()
-    end
-
-    if (hp.healAbsorbBar) then
-        hp.healAbsorbBar:SetMinMaxValues(0, maxHealth)
-        hp.healAbsorbBar:SetValue(myCurrentHealAbsorb)
-        hp.healAbsorbBar:Show()
-    end
-
-    if (hp.tankHealBar) then
-        hp.tankHealBar:SetMinMaxValues(0, maxHealth)
-        hp.tankHealBar:SetValue(tankHeal)
-        hp.tankHealBar:Show()
-    end
-
-    if (hp.PostUpdate) then
-        return TH:UpdateHealComm(unit, overAbsorb, overHealAbsorb)
-    end
+    TH:UpdateHealComm()
 end
 
 function TH:Construct()
@@ -167,6 +139,39 @@ function TH:Construct()
     end
 
     return tankHealBar
+end
+
+local function UpdateFillBar(frame, previousTexture, bar)
+    -- This is duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
+    local orientation = frame.Health:GetOrientation()
+    bar:ClearAllPoints()
+    if orientation == "HORIZONTAL" then
+        bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
+        bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
+    else
+        bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
+        bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
+    end
+
+    local totalWidth, totalHeight = frame.Health:GetSize();
+    if orientation == "HORIZONTAL" then
+        bar:Width(totalWidth);
+    else
+        bar:Height(totalHeight);
+    end
+
+    return bar:GetStatusBarTexture();
+end
+
+function TH:UpdateHealComm()
+    -- This is also mostly duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
+    local frame = E.UnitFrames.player
+    local previousTexture = frame.Health:GetStatusBarTexture();
+
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.myBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.otherBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.absorbBar);
+    UpdateFillBar(frame, previousTexture, frame.HealPrediction.tankHealBar);
 end
 
 function TH:Configure()
@@ -199,44 +204,6 @@ function TH:Configure()
     end
 end
 
-
-local function UpdateFillBar(frame, previousTexture, bar, amount)
-    -- This is duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
-    if (amount == 0) then
-        bar:Hide();
-        return previousTexture;
-    end
-
-    local orientation = frame.Health:GetOrientation()
-    bar:ClearAllPoints()
-    if orientation == "HORIZONTAL" then
-        bar:Point("TOPLEFT", previousTexture, "TOPRIGHT");
-        bar:Point("BOTTOMLEFT", previousTexture, "BOTTOMRIGHT");
-    else
-        bar:Point("BOTTOMRIGHT", previousTexture, "TOPRIGHT");
-        bar:Point("BOTTOMLEFT", previousTexture, "TOPLEFT");
-    end
-
-    local totalWidth, totalHeight = frame.Health:GetSize();
-    if orientation == "HORIZONTAL" then
-        bar:Width(totalWidth);
-    else
-        bar:Height(totalHeight);
-    end
-
-    return bar:GetStatusBarTexture();
-end
-
-function TH:UpdateHealComm(unit, myIncomingHeal, allIncomingHeal, totalAbsorb)
-    -- This is also mostly duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
-    local frame = E.UnitFrames.player
-    local previousTexture = frame.Health:GetStatusBarTexture();
-
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.myBar, myIncomingHeal);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.otherBar, allIncomingHeal);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.absorbBar, totalAbsorb);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.tankHealBar, 1);
-end
 
 
 
