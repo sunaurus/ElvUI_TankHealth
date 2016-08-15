@@ -121,7 +121,7 @@ function TH:Override(event, unit)
     UpdateBar(hp.myBar, maxHealth, myIncomingHeal)
     UpdateBar(hp.otherbar, maxHealth, otherIncomingHeal)
     UpdateBar(hp.absorbBar, maxHealth, totalAbsorb)
-    UpdateBar(hp.healAbsorbBar, maxHealth, myCurrentHealAbsorb)
+--    UpdateBar(hp.healAbsorbBar, maxHealth, myCurrentHealAbsorb)
     UpdateBar(hp.tankHealBar, maxHealth, tankHeal)
 
     TH:UpdateHealComm()
