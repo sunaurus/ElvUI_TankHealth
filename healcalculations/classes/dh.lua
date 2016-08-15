@@ -18,9 +18,6 @@ function TH:Calculate_DH_Artifact(a)
 end
 
 function TH:Calculate_DH()
-    local defaultCrit = 16
-    local critRating = GetCombatRating(CR_CRIT_SPELL)
-    local critPercent = defaultCrit + (critRating / 350)
 
     -- Stat multipliers
     local AP = UnitAttackPower("player")
