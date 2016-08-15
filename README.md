@@ -30,10 +30,8 @@ work on them. New features will also be considered.
 
 - Implement healing calculations for:
   - Monk
-  - Paladin
   - Warrior
 - Implement artifact trait multiplier calculation for:
   - Monk
-  - Paladin
   - Warrior
 - Change bar color based on heal power? (for example, red if heal is near theoretical minimum, green if heal is near theoretical maximum)
