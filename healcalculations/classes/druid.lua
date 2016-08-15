@@ -1,38 +1,60 @@
---Initially based on work by Ooshraxa
---http://www.mmo-champion.com/threads/2024876-WA2-Guardian-Frenzied-Regen-Tracker
+--Code adapted from weakaura by Hamsda (with permission)
+--https://wago.io/profile/Hamsda
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
 
-function TH:Calculate_Druid_Artifact(a)
-    local wildfleshRank = select(3, a.GetPowerInfo(200400))
+local function GetArtifactMultiplier()
+    local wildfleshRank = TH:GetArtifactTraitRank(200400)
     -- Wildflesh multiplier is 5% * rank
     return 1 + wildfleshRank * 0.05
 end
 
 function TH:Calculate_Druid()
 
+    local rage = UnitPower("player")
+    if rage < 10 then
+        return 0
+    end
+
     -- Stat multipliers
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
-    local versatilityMP = 1 + (versatility / 100)
+    local versatilityMulti = 1 + (versatility / 100)
     local mastery = GetMastery()
-    local masteryMP = 1 + (mastery / 100)
+    local masteryMulti = 1 + (mastery / 100)
 
     -- Artifact trait multipliers
-    local artifactMultiplr = TH:GetArtifactMultiplier()
-
-    -- Cooldown multipliers
-    local healMultiplr = TH:GetCooldownMultiplier()
+    local artifactMulti = GetArtifactMultiplier()
 
     -- Guardian of Elune
-    local guardianOfElune = 1
-    if UnitAura("player", "Guardian of Elune") then
-        guardianOfElune = 1.2
+    local goeMulti = UnitBuff("player", GetSpellInfo(213680)) and 1.2 or 1
+
+    -- Life Cocoon
+    local lcMulti = UnitBuff("player", GetSpellInfo(116849)) and 1.5 or 1
+
+    --T17
+    local t17Multi = 1
+    local t17n, _, _, t17s = UnitBuff("player", GetSpellInfo(177969))
+    if t17n then
+        t17Multi = 1 + t17s * 0.1
     end
+
+    --T18
+    local t18Multi = UnitBuff("player", GetSpellInfo(192081)) and aura_env.GetNumSetPieces("T18") >= 2 and 1.2 or 1
+
+    --T19
+    local t19Multi = 1
+    local t19n, _, _, t19s = UnitBuff("player", GetSpellInfo(211160))
+    if t19n then
+        t19Multi = 1 + (t19s / 3)
+    end
+
+
+    local multiplier = versatilityMulti * artifactMulti * masteryMulti * goeMulti * lcMulti * t17Multi * t18Multi * t19Multi
 
     -- Min healing, 5% of maxhealth:
     local minHeal = UnitHealthMax("player") * 0.05
-    minHeal = ((minHeal * versatilityMP * artifactMultiplr) * masteryMP) * guardianOfElune * healMultiplr
+    minHeal = minHeal * multiplier
 
     -- Received damage
     local now = time()
@@ -46,27 +68,11 @@ function TH:Calculate_Druid()
         end
     end
 
-    -- Heal is only half of damage taken, plus Versatility:
-    local totalHeal = (((receivedDamage / 2) * versatilityMP * artifactMultiplr) * masteryMP) * guardianOfElune * healMultiplr
-    -- Only output heal value if it"s greater than MinHeal:
+    local totalHeal = (receivedDamage / 2) * multiplier
+
     if totalHeal < minHeal then
         totalHeal = minHeal
     end
 
     return math.floor(totalHeal) or 0
-end
-
-function TH:TrackDamage(timeStamp, event, ...)
-
-    if (string.find(event, "_DAMAGE")) then
-        local _, _, _, _, _, destGUID, _, _, _, amount, sourceName, _, spellAmount = ...
-        if (destGUID == UnitGUID("player")) then
-            -- If it"s a melee attack:
-            if sourceName == -1 then
-                TH.receivedDamage[timeStamp] = amount
-            else
-                TH.receivedDamage[timeStamp] = spellAmount
-            end
-        end
-    end
 end
