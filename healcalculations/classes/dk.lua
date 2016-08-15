@@ -1,12 +1,41 @@
+--Code adapted from weakaura by Hamsda (with permission)
+--https://wago.io/profile/Hamsda
+
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
 
-local function GetArtifactMultiplier()
-    --unimplemented
-    return 1
+local function GetArtifactModifier()
+    local vampiricFangsRank = TH:GetArtifactTraitRank(192544)
+    -- Vampiric Fangs modifier is +5% to Vampiric Blood per rank
+    return vampiricFangsRank * 0.05
 end
 
 function TH:Calculate_DK()
-    --unimplemented
-    return 100000
+
+
+    -- Stat multipliers
+    local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
+    local versatilityMulti = 1 + (versatility / 100)
+
+    --Vampiric Blood
+    --check artifact traits
+    local vamp = 1.3 + GetArtifactModifier()
+    local vampMulti = UnitBuff("player", GetSpellInfo(55233)) and vamp or 1
+
+    -- Received damage
+    local now = time()
+    local receivedDamage = 0
+    for key, value in pairs(TH.receivedDamage) do
+        -- Check if damage was done within past 5 seconds
+        if key > now - 5 then
+            receivedDamage = receivedDamage + value or 0
+        else
+            TH.receivedDamage[key] = nil
+        end
+    end
+
+    local totalHeal = (receivedDamage / 5) * versatilityMulti * vampMulti
+
+    return totalHeal
+
 end

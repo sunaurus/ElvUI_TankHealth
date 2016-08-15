@@ -29,12 +29,10 @@ work on them. New features will also be considered.
 ### To do
 
 - Implement healing calculations for:
-  - DK
   - Monk
   - Paladin
   - Warrior
 - Implement artifact trait multiplier calculation for:
-  - DK
   - Monk
   - Paladin
   - Warrior
