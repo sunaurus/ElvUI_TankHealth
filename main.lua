@@ -54,7 +54,9 @@ local function CalculateHeal()
         [73] = TH.Calculate_Warrior
     }
     if calcFuncs[specId] then
-        return calcFuncs[specId]()
+        -- Raid cooldown multiplier
+        local cdMulti = TH:GetCooldownMultiplier()
+        return calcFuncs[specId]() * cdMulti
     else
         return 0
     end
@@ -113,10 +115,7 @@ function TH:Override(event, unit)
         myCurrentHealAbsorb = 0
     end
 
-    -- Cooldown multipliers
-    local healMulti = TH:GetCooldownMultiplier()
-
-    local tankHeal = min(maxHealth - health, (totalAbsorb + CalculateHeal()) * healMulti)
+    local tankHeal = min(maxHealth - health, (totalAbsorb + CalculateHeal()))
 
     --    print("tankHeal: " .. tankHeal)
     --    print("totalAbsorb + CalculateHeal(): " .. totalAbsorb + CalculateHeal())
