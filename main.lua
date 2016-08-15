@@ -41,16 +41,22 @@ function TH:InsertOptions()
 end
 
 local function CalculateHeal()
+
+    local specId = GetInspectSpecialization("player")
+
     local calcFuncs = {
-        ["DEMONHUNTER"] = TH.Calculate_DH,
-        ["DEATHKNIGHT"] = TH.Calculate_DK,
-        ["DRUID"] = TH.Calculate_Druid,
-        ["MONK"] = TH.Calculate_Monk,
-        ["PALADIN"] = TH.Calculate_Paladin,
-        ["WARRIOR"] = TH.Calculate_Warrior
+        [581] = TH.Calculate_DH,
+        [250] = TH.Calculate_DK,
+        [104] = TH.Calculate_Druid,
+        [268] = TH.Calculate_Monk,
+        [66] = TH.Calculate_Paladin,
+        [73] = TH.Calculate_Warrior
     }
-    local _, class, _ = UnitClass("player")
-    return calcFuncs[class]()
+    if calcFuncs[specId] then
+        return calcFuncs[class]()
+    else
+        return 0
+    end
 end
 
 
