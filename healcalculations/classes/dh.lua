@@ -22,6 +22,9 @@ function TH:Calculate_DH()
     -- Stat multipliers
     local AP = UnitAttackPower("player")
     local pain = UnitPower("player")
+    if pain < 30 then
+        return 0
+    end
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
     local versatilityMP = 1 + (versatility / 100)
 
