@@ -10,6 +10,17 @@ The heal spell that is used depends on the class:
 - Paladin: Light of the Protector http://www.wowhead.com/spell=184092/light-of-the-protector
 - Warrior: Impending Victory http://www.wowhead.com/spell=202168/impending-victory
 
+### Help
+
+If something is broken, please [open an issue on the issue tracker](https://github.com/sunaurus/ElvUI_TankHealth/issues/new).
+
+### Contributing
+
+All pull requests are appreciated, but please let me know before you start work so that I know not to work on
+the same thing. If there are any issues on the issue tracker or something on the to do list (below), feel free to
+work on them. New features will also be considered.
+
+
 ### To do
 
 - Implement healing calculations for:
