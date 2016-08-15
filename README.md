@@ -15,3 +15,4 @@ The heal spell that is used depends on the class:
 - Implement healing calculations for all classes
 - Fix artifact traits in DH healing calculation
 - Add a screenshot of the addon to the readme
+- Be more DRY in main.lua (could probably remove Override and just do all logic in PostUpdate?)
