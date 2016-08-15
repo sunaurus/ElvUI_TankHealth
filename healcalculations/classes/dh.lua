@@ -10,7 +10,7 @@ function TH:Calculate_DH_Artifact(a)
     local tormentedSoulsRank = select(3, a.GetPowerInfo(1328))
 
     -- Devour souls multiplier is 3% * rank
-    multiplier = 1 + devourSoulsRank * 0.03
+    local multiplier = 1 + devourSoulsRank * 0.03
     -- Tormented Souls multiplier is 10% * rank
     multiplier = multiplier * (1 + tormentedSoulsRank * 0.1)
 
@@ -25,7 +25,7 @@ function TH:Calculate_DH()
     -- Stat multipliers
     local AP = UnitAttackPower("player")
     local pain = UnitPower("player")
-    local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)
+    local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
     local versatilityMP = 1 + (versatility / 100)
 
     -- Artifact trait multipliers
