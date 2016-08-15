@@ -19,7 +19,7 @@ function TH:Calculate_Druid()
     local masteryMulti = 1 + (mastery / 100)
 
     -- Artifact trait multipliers
-    local artifactMulti = TH:GetArtifactMultiplier()
+    local artifactMulti = GetArtifactMultiplier()
 
     -- Guardian of Elune
     local goeMulti = UnitBuff("player", GetSpellInfo(213680)) and 1.2 or 1
