@@ -4,20 +4,18 @@ local TH = E:GetModule('TankHealth');
 function TH:GetArtifactMultiplier()
     local u, e, a = UIParent, "ARTIFACT_UPDATE", C_ArtifactUI
 
-    local multiplier = 1
-
-    local artifactClasses = {
-        [128832] = "DH",
-        [128402] = "DK",
-        [128821] = "Druid",
-        [128938] = "Monk",
-        [128867] = "Paladin",
-        [128288] = "Warrior"
+    local artifactFuncs = {
+        [128832] = TH.Calculate_DH_Artifact,
+        [128402] = TH.Calculate_DK_Artifact,
+        [128821] = TH.Calculate_Druid_Artifact,
+        [128938] = TH.Calculate_Monk_Artifact,
+        [128867] = TH.Calculate_Paladin_Artifact,
+        [128288] = TH.Calculate_Warrior_Artifact
     }
 
-    local equippedArtifact = artifact.GetEquippedArtifactInfo()
+    local equippedArtifact = a.GetEquippedArtifactInfo()
 
-    if not artifactClasses[equippedArtifact] then
+    if not artifactFuncs[equippedArtifact] then
         return multiplier
     end
 
@@ -26,34 +24,9 @@ function TH:GetArtifactMultiplier()
     u:UnregisterEvent(e)
     SocketInventoryItem(16)
 
-    if artifactClasses[equippedArtifact] == "DH" then
-
-        local devourSoulsRank = select(3, a.GetPowerInfo(1233))
-        local tormentedSoulsRank = select(3, a.GetPowerInfo(1328))
-
-        -- Devour souls multiplier is 3% * rank
-        multiplier = 1 + devourSoulsRank * 0.03
-        -- Tormented Souls multiplier is 10% * rank
-        multiplier = multiplier * (1 + tormentedSoulsRank * 0.1)
-
-    elseif artifactClasses[equippedArtifact] == "DK" then
-        --unimplemented
-    elseif artifactClasses[equippedArtifact] == "Druid" then
-        local wildfleshRank = select(3, a.GetPowerInfo(200400))
-
-        -- Wildflesh multiplier is 5% * rank
-        multiplier = 1 + wildfleshRank * 0.05
-
-    elseif artifactClasses[equippedArtifact] == "Monk" then
-        --unimplemented
-    elseif artifactClasses[equippedArtifact] == "Paladin" then
-        --unimplemented
-    elseif artifactClasses[equippedArtifact] == "Warrior" then
-        --unimplemented
-    end
-
-
+    local multiplier = artifactFuncs[equippedArtifact](a)
     a.Clear()
+
     u:RegisterEvent(e)
     SetCVar("Sound_EnableAllSound", 1)
 

@@ -8,9 +8,9 @@
 main.lua
 healcalculations/artifact.lua
 healcalculations/cooldowns.lua
-healcalculations/dh.lua
-healcalculations/dk.lua
-healcalculations/druid.lua
-healcalculations/monk.lua
-healcalculations/paladin.lua
-healcalculations/warrior.lua
+healcalculations/classes/dh.lua
+healcalculations/classes/dk.lua
+healcalculations/classes/druid.lua
+healcalculations/classes/monk.lua
+healcalculations/classes/paladin.lua
+healcalculations/classes/warrior.lua
