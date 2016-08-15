@@ -42,7 +42,8 @@ end
 
 local function CalculateHeal()
 
-    local specId = GetInspectSpecialization("player")
+    local specIndex = GetSpecialization()
+    local specId = select(1, GetSpecializationInfo(specIndex))
 
     local calcFuncs = {
         [581] = TH.Calculate_DH,
@@ -53,7 +54,7 @@ local function CalculateHeal()
         [73] = TH.Calculate_Warrior
     }
     if calcFuncs[specId] then
-        return calcFuncs[class]()
+        return calcFuncs[specId]()
     else
         return 0
     end
