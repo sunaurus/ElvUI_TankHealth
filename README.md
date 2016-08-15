@@ -7,7 +7,7 @@ The heal spell that is used depends on the class:
 - DK: Death Strike http://www.wowhead.com/spell=49998/death-strike
 - Druid: Frenzied Regeneration http://www.wowhead.com/spell=22842/frenzied-regeneration
 - Monk: Expel Harm http://www.wowhead.com/spell=115072/expel-harm
-- Paladin: Light of the Protector Light of the protector http://www.wowhead.com/spell=184092/light-of-the-protector
+- Paladin: Light of the Protector http://www.wowhead.com/spell=184092/light-of-the-protector
 - Warrior: Impending Victory http://www.wowhead.com/spell=202168/impending-victory
 
 ### To do
