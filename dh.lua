@@ -1,3 +1,6 @@
+--Code modified from WA by MightBeGiant
+--http://www.mmo-champion.com/threads/1984610-Demon-Hunter-Weak-Auras-Thread?p=41713755&viewfull=1#post41713755
+
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule('TankHealth');
 
@@ -13,7 +16,7 @@ function TH:Calculate_DH()
     local versatilityMP = 1 + (versatility / 100)
 
     -- Trait multipliers
-    -- I think this is from WA? Not sure
+    -- I think this is from WA? Probably need a different way of getting these multipliers
     --    local devourSouls = WA_GIANTDH_DEVOUR_SOULS_TRAIT
     local devourSouls = 1
     --    local tormentedSouls = WA_GIANTDH_TORMENTED_SOULS_TRAIT
