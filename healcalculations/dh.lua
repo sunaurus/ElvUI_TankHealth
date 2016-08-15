@@ -15,12 +15,8 @@ function TH:Calculate_DH()
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE)
     local versatilityMP = 1 + (versatility / 100)
 
-    -- Trait multipliers
-    -- I think this is from WA? Probably need a different way of getting these multipliers
-    --    local devourSouls = WA_GIANTDH_DEVOUR_SOULS_TRAIT
-    local devourSouls = 1
-    --    local tormentedSouls = WA_GIANTDH_TORMENTED_SOULS_TRAIT
-    local tormentedSouls = 1
+    -- Artifact trait multipliers
+    local artifactMultiplr = TH:GetArtifactMultiplier()
 
     -- Cooldown multipliers
     local healMultiplr = 1
@@ -42,8 +38,8 @@ function TH:Calculate_DH()
     local totalFragHeal = (2.5 * AP) * fragments * versatilityMP
 
     -- Soul Cleave healing
-    local cleaveHeal = ((2 * AP) * 4.5) * versatilityMP * (min(60, pain) / 60) * devourSouls * tormentedSouls
-    local cleaveHealMax = ((2 * AP) * 4.5) * versatilityMP * devourSouls * tormentedSouls
+    local cleaveHeal = ((2 * AP) * 4.5) * versatilityMP * (min(60, pain) / 60) * artifactMultiplr
+    local cleaveHealMax = ((2 * AP) * 4.5) * versatilityMP * artifactMultiplr
 
     -- Total healing
     local totalHeal = (totalFragHeal + cleaveHeal) * healMultiplr

@@ -6,6 +6,7 @@
 ## RequiredDeps: ElvUI
 
 main.lua
+healcalculations/artifact.lua
 healcalculations/dh.lua
 healcalculations/dk.lua
 healcalculations/druid.lua
