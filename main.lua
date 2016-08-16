@@ -3,6 +3,18 @@ local TH = E:NewModule("TankHealth", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.
 local EP = LibStub("LibElvUIPlugin-1.0") --We can use this to automatically insert our GUI tables when ElvUI_Config is loaded.
 local addonName, addonTable = ... --See http://www.wowinterface.com/forums/showthread.php?t=51502&p=304704&postcount=2
 
+--Cache global variables
+local GetInspectSpecialization = GetInspectSpecialization
+local UnitGetIncomingHeals = UnitGetIncomingHeals
+local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitClass = UnitClass
+local min, max = math.min, math.max
+local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
+local CreateFrame = CreateFrame
+
 --Default options
 P["TankHealth"] = {
     ["color"] = { r = 250 / 255, g = 128 / 255, b = 114 / 255, a = 0.3 },
