@@ -34,7 +34,8 @@ function TH:Calculate_DH()
     end
 
     -- Stat multipliers
-    local AP = UnitAttackPower("player")
+    local APBase, APPos, APNeg = UnitAttackPower("player")
+    local AP = APBase + APPos + APNeg
 
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
     local versatilityMulti = 1 + (versatility / 100)
