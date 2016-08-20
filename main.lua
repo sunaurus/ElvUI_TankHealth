@@ -21,6 +21,7 @@ local addonName, addonTable = ... --See http://www.wowinterface.com/forums/showt
 --Default options
 P["TankHealth"] = {
     ["color"] = { r = 250 / 255, g = 128 / 255, b = 114 / 255, a = 0.3 },
+    ["overheal"] = false,
 }
 
 --Function we can call when a setting changes.
@@ -34,7 +35,7 @@ function TH:InsertOptions()
     E.Options.args.TankHealth = {
         order = 100,
         type = "group",
-        name = "TankHealth",
+        name = "|cff00b3ffTankHealth|r",
         args = {
             color = {
                 order = 1,
@@ -49,6 +50,17 @@ function TH:InsertOptions()
                     local c = E.db.TankHealth.color
                     c.r, c.g, c.b, c.a = r, g, b, a
                     TH:Update()
+                end,
+            },
+            overheal = {
+                order = 2,
+                type = "toggle",
+                name = "Show overheal",
+                get = function(info)
+                    return E.db.TankHealth.overheal
+                end,
+                set = function(info, value)
+                    E.db.TankHealth.overheal = value
                 end,
             },
         },
@@ -111,7 +123,12 @@ function TH:Override(event, unit)
 
 
     local cdMulti = TH:GetCooldownMultiplier()
-    local tankHeal = min(maxHealth - health, (totalAbsorb + hp.calcFunc() * cdMulti))
+
+    local tankHeal = totalAbsorb + hp.calcFunc() * cdMulti
+
+    if not E.db.TankHealth.overheal then
+        tankHeal = min(maxHealth - health, tankHeal)
+    end
 
     --    print("tankHeal: " .. tankHeal)
     --    print("totalAbsorb + CalculateHeal(): " .. totalAbsorb + CalculateHeal())
@@ -141,7 +158,7 @@ end
 
 local function UpdateFillBar(frame, previousTexture, bar, amount)
     -- This is duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
-    if ( amount == 0 ) then
+    if (amount == 0) then
         bar:Hide();
         return previousTexture;
     end
@@ -247,7 +264,6 @@ function TH:TrackDamage(event, time, subevent, ...)
             end
         end
     end
-
 end
 
 function TH:CheckSpec()
