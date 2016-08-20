@@ -27,12 +27,15 @@ end
 
 function TH:Calculate_Warrior()
     --Rage
-    local curRage = UnitPower("player")
+    local rage = UnitPower("player")
+    if rage < 20 then
+        return 0
+    end
     local minRage, maxRage = 20, 60
     if UnitBuff("player", GetSpellInfo(202574)) then
         minRage, maxRage = 10, 30
     end
-    local calcRage = max(minRage, min(maxRage, curRage))
+    local calcRage = max(minRage, min(maxRage, rage))
 
     -- Stat multipliers
     local APBase, APPos, APNeg = UnitAttackPower("player")
