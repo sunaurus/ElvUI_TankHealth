@@ -13,7 +13,7 @@ The heal spell that is used depends on the class:
 - Druid: [Frenzied Regeneration](http://www.wowhead.com/spell=22842/frenzied-regeneration)
 - Monk: [Expel Harm](http://www.wowhead.com/spell=115072/expel-harm)
 - Paladin: [Light of the Protector](http://www.wowhead.com/spell=184092/light-of-the-protector)
-- Warrior: [Impending Victory](http://www.wowhead.com/spell=202168/impending-victory)
+- Warrior: [Ignore Pain](http://www.wowhead.com/spell=190456/ignore-pain) (shows the potential absorb)
 
 ### Help
 
@@ -32,4 +32,5 @@ work on them. New features will also be considered.
   - Warrior
 - Implement artifact trait multiplier calculation for:
   - Warrior
+- Cache relevant talents on PLAYER_TALENT_UPDATE events (instead of checking every time we calculate potential heals)
 - Change bar color based on heal power? (for example, red if heal is near theoretical minimum, green if heal is near theoretical maximum)
