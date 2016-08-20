@@ -13,10 +13,7 @@ function TH:Calculate_Monk()
     local versatilityMulti = 1 + (versatility / 100)
 
     -- Healing spheres
-    local spheres = 0
-    if UnitBuff("player", "Healing Sphere") then
-        spheres = select(4, UnitBuff("player", "Healing Sphere"))
-    end
+    local spheres = select(4, UnitBuff("player", GetSpellInfo(115072))) or 0
 
     local singleSphereHeal = (7.5 * AP) * versatilityMulti
     local totalHeal = singleSphereHeal * spheres
