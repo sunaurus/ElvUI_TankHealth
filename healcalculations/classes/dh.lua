@@ -48,8 +48,12 @@ function TH:Calculate_DH()
     local totalFragHeal = singleFragHeal * fragments
 
     -- Soul Cleave healing
-    local cleaveHeal = ((2 * AP) * 4.5) * versatilityMulti * (min(60, pain) / 60) * artifactMulti
-    --    local cleaveHealMax = ((2 * AP) * 4.5) * versatilityMulti * artifactMulti
+
+    -- Soul cleave heals for 1098% of AP
+    local healMulti = 10.98
+
+    local cleaveHeal = AP * healMulti * versatilityMulti * (min(60, pain) / 60) * artifactMulti
+    --    local cleaveHealMax = AP * healMulti * versatilityMulti * artifactMulti
 
     -- Total healing
     local totalHeal = (totalFragHeal + cleaveHeal)
