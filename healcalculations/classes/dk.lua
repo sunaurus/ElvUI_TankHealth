@@ -1,3 +1,6 @@
+--Code adapted from weakaura by Hamsda (with permission)
+--https://wago.io/profile/Hamsda
+
 --Cache global variables
 local UnitPower = UnitPower
 local UnitBuff = UnitBuff
@@ -6,9 +9,6 @@ local GetCombatRatingBonus = GetCombatRatingBonus
 local GetSpellInfo = GetSpellInfo
 local GetVersatilityBonus = GetVersatilityBonus
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
-
---Code adapted from weakaura by Hamsda (with permission)
---https://wago.io/profile/Hamsda
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");

@@ -1,3 +1,6 @@
+--Code adapted from weakaura by MightBeGiant (with permission)
+--http://www.mmo-champion.com/threads/1984610-Demon-Hunter-Weak-Auras-Thread?p=41713755&viewfull=1#post41713755
+
 --Cache global variables
 local UnitPower = UnitPower
 local UnitAttackPower = UnitAttackPower
@@ -9,8 +12,6 @@ local GetSpellInfo = GetSpellInfo
 local GetVersatilityBonus = GetVersatilityBonus
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
 
---Code adapted from weakaura by MightBeGiant (with permission)
---http://www.mmo-champion.com/threads/1984610-Demon-Hunter-Weak-Auras-Thread?p=41713755&viewfull=1#post41713755
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
 

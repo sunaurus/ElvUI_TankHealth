@@ -1,3 +1,6 @@
+--Code adapted from weakaura by Hamsda (with permission)
+--https://wago.io/profile/Hamsda
+
 --Cache global variables
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -8,9 +11,6 @@ local GetTalentInfo = GetTalentInfo
 local GetSpellInfo = GetSpellInfo
 local GetVersatilityBonus = GetVersatilityBonus
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
-
---Code adapted from weakaura by Hamsda (with permission)
---https://wago.io/profile/Hamsda
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
@@ -35,7 +35,7 @@ function TH:Calculate_Paladin()
     local versatilityMulti = 1 + (versatility / 100)
 
     -- Check if standing in Consecration or Consecrated Hammer is skilled
-    local consMulti = ((select(4, GetTalentInfo(1,3,1))) or UnitBuff("player", GetSpellInfo(188370))) and 1.2 or 1
+    local consMulti = ((select(4, GetTalentInfo(1, 3, 1))) or UnitBuff("player", GetSpellInfo(188370))) and 1.2 or 1
 
     -- Check for Avenging Wrath
     local awMulti = UnitBuff("player", GetSpellInfo(31884)) and (1 + (select(17, UnitBuff("player", GetSpellInfo(31884)))) / 100) or 1
@@ -49,5 +49,4 @@ function TH:Calculate_Paladin()
     local totalHeal = missingHp * healMulti * consMulti * versatilityMulti * awMulti * artifactMulti
 
     return totalHeal
-
 end
