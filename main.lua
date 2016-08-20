@@ -139,7 +139,7 @@ function TH:Override(event, unit)
     UpdateBar(hp.healAbsorbBar, maxHealth, myCurrentHealAbsorb)
     UpdateBar(hp.tankHealBar, maxHealth, tankHeal)
 
-    TH:UpdateHealComm(myIncomingHeal, otherIncomingHeal, totalAbsorb, tankHeal)
+    TH:UpdateHealComm()
 end
 
 function TH:Construct()
@@ -156,9 +156,9 @@ function TH:Construct()
     return tankHealBar
 end
 
-local function UpdateFillBar(frame, previousTexture, bar, amount)
+local function UpdateFillBar(frame, previousTexture, bar)
     -- This is duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
-    if (amount == 0) then
+    if (bar:GetValue() == 0) then
         bar:Hide();
         return previousTexture;
     end
@@ -183,15 +183,15 @@ local function UpdateFillBar(frame, previousTexture, bar, amount)
     return bar:GetStatusBarTexture();
 end
 
-function TH:UpdateHealComm(myIncomingHeal, allIncomingHeal, totalAbsorb, tankHeal)
+function TH:UpdateHealComm()
     -- This is also mostly duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
     local frame = E.UnitFrames.player
     local previousTexture = frame.Health:GetStatusBarTexture();
 
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.myBar, myIncomingHeal);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.otherBar, allIncomingHeal);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.absorbBar, totalAbsorb);
-    UpdateFillBar(frame, previousTexture, frame.HealPrediction.tankHealBar, tankHeal);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.myBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.otherBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.absorbBar);
+    UpdateFillBar(frame, previousTexture, frame.HealPrediction.tankHealBar);
 end
 
 function TH:Configure()
