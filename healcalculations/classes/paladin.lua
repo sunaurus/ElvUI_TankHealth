@@ -1,3 +1,14 @@
+--Cache global variables
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitBuff = UnitBuff
+local select, unpack = select, unpack
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetTalentInfo = GetTalentInfo
+local GetSpellInfo = GetSpellInfo
+local GetVersatilityBonus = GetVersatilityBonus
+local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
+
 --Code adapted from weakaura by Hamsda (with permission)
 --https://wago.io/profile/Hamsda
 

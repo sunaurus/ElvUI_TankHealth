@@ -1,19 +1,22 @@
-local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
-local TH = E:NewModule("TankHealth", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0"); --Create a plugin within ElvUI and adopt AceHook-3.0, AceEvent-3.0 and AceTimer-3.0. We can make use of these later.
-local EP = LibStub("LibElvUIPlugin-1.0") --We can use this to automatically insert our GUI tables when ElvUI_Config is loaded.
-local addonName, addonTable = ... --See http://www.wowinterface.com/forums/showthread.php?t=51502&p=304704&postcount=2
-
 --Cache global variables
-local GetInspectSpecialization = GetInspectSpecialization
 local UnitGetIncomingHeals = UnitGetIncomingHeals
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitClass = UnitClass
+local UnitGUID = UnitGUID
 local min, max = math.min, math.max
-local select, pairs, type, unpack, assert, tostring = select, pairs, type, unpack, assert, tostring
+local select, unpack = select, unpack
 local CreateFrame = CreateFrame
+local GetSpecialization = GetSpecialization
+local GetSpecializationInfo = GetSpecializationInfo
+local GetSpellInfo = GetSpellInfo
+
+
+local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+local TH = E:NewModule("TankHealth", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0"); --Create a plugin within ElvUI and adopt AceHook-3.0, AceEvent-3.0 and AceTimer-3.0. We can make use of these later.
+local EP = LibStub("LibElvUIPlugin-1.0") --We can use this to automatically insert our GUI tables when ElvUI_Config is loaded.
+local addonName, addonTable = ... --See http://www.wowinterface.com/forums/showthread.php?t=51502&p=304704&postcount=2
 
 --Default options
 P["TankHealth"] = {
@@ -247,8 +250,6 @@ end
 
 function TH:CheckSpec()
     local p = E.UnitFrames.player
-
-    print("jou!")
 
     local specIndex = GetSpecialization()
     local specId = GetSpecializationInfo(specIndex)

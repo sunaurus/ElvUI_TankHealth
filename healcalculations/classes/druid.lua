@@ -1,3 +1,14 @@
+--Cache global variables
+local UnitPower = UnitPower
+local UnitHealthMax = UnitHealthMax
+local UnitBuff = UnitBuff
+local unpack, time, pairs = unpack, time, pairs
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetSpellInfo = GetSpellInfo
+local GetMastery = GetMastery
+local GetVersatilityBonus = GetVersatilityBonus
+local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
+
 --Code adapted from weakaura by Hamsda (with permission)
 --https://wago.io/profile/Hamsda
 
@@ -64,5 +75,5 @@ function TH:Calculate_Druid()
         totalHeal = minHeal
     end
 
-    return math.floor(totalHeal) or 0
+    return totalHeal or 0
 end

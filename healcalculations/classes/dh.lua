@@ -1,3 +1,14 @@
+--Cache global variables
+local UnitPower = UnitPower
+local UnitAttackPower = UnitAttackPower
+local UnitBuff = UnitBuff
+local min = math.min
+local select, unpack = select, unpack
+local GetCombatRatingBonus = GetCombatRatingBonus
+local GetSpellInfo = GetSpellInfo
+local GetVersatilityBonus = GetVersatilityBonus
+local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
+
 --Code adapted from weakaura by MightBeGiant (with permission)
 --http://www.mmo-champion.com/threads/1984610-Demon-Hunter-Weak-Auras-Thread?p=41713755&viewfull=1#post41713755
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
@@ -32,18 +43,17 @@ function TH:Calculate_DH()
 
     -- Soul Fragments healing
     local fragments = select(4, UnitBuff("player", GetSpellInfo(203981))) or 0
-    print("fragments: " .. fragments)
 
     local singleFragHeal = (2.5 * AP) * versatilityMulti
     local totalFragHeal = singleFragHeal * fragments
 
     -- Soul Cleave healing
     local cleaveHeal = ((2 * AP) * 4.5) * versatilityMulti * (min(60, pain) / 60) * artifactMulti
---    local cleaveHealMax = ((2 * AP) * 4.5) * versatilityMulti * artifactMulti
+    --    local cleaveHealMax = ((2 * AP) * 4.5) * versatilityMulti * artifactMulti
 
     -- Total healing
     local totalHeal = (totalFragHeal + cleaveHeal)
---    local totalHealMax = ((singleFragHeal * 5) + cleaveHealMax)
+    --    local totalHealMax = ((singleFragHeal * 5) + cleaveHealMax)
 
-    return math.ceil(totalHeal)
+    return totalHeal
 end
