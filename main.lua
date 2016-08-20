@@ -108,6 +108,8 @@ function TH:Override(event, unit)
         myCurrentHealAbsorb = 0
     end
 
+
+
     local cdMulti = TH:GetCooldownMultiplier()
     local tankHeal = min(maxHealth - health, (totalAbsorb + hp.calcFunc() * cdMulti))
 

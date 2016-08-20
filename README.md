@@ -28,9 +28,5 @@ work on them. New features will also be considered.
 
 ### To do
 
-- Implement healing calculations for:
-  - Warrior
-- Implement artifact trait multiplier calculation for:
-  - Warrior
 - Cache relevant talents on PLAYER_TALENT_UPDATE events (instead of checking every time we calculate potential heals)
 - Change bar color based on heal power? (for example, red if heal is near theoretical minimum, green if heal is near theoretical maximum)

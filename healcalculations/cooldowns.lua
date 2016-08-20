@@ -1,6 +1,7 @@
 --Cache global variables
 local UnitBuff = UnitBuff
-local unpack = unpack
+local UnitClass = UnitClass
+local unpack, select = unpack, select
 local GetSpellInfo = GetSpellInfo
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
@@ -10,6 +11,10 @@ local TH = E:GetModule("TankHealth");
 local UnitBuff = UnitBuff
 
 function TH:GetCooldownMultiplier()
+
+    if select(2, UnitClass("player")) == "WARRIOR" then
+        return 1
+    end
 
     -- Guardian Spirit
     local gsMulti = UnitBuff("player", GetSpellInfo(47788)) and 1.4 or 1
