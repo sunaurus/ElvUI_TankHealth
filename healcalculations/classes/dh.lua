@@ -31,10 +31,8 @@ function TH:Calculate_DH()
     local artifactMulti = GetArtifactMultiplier()
 
     -- Soul Fragments healing
-    local fragments = 0
-    if UnitBuff("player", "Soul Fragments") then
-        fragments = select(4, UnitBuff("player", "Soul Fragments"))
-    end
+    local fragments = select(4, UnitBuff("player", GetSpellInfo(203981))) or 0
+    print("fragments: " .. fragments)
 
     local singleFragHeal = (2.5 * AP) * versatilityMulti
     local totalFragHeal = singleFragHeal * fragments
