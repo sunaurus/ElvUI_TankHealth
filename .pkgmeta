@@ -1,0 +1,8 @@
+package-as: ElvUI_TankHealth
+
+ignore:
+    - .gitignore # ignore a specific file
+
+license-output: LICENSE.txt
+
+enable-nolib-creation: no
