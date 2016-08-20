@@ -2,7 +2,7 @@
 
 
 
-This addon is an ElvUI plugin which adds the potential amount of healing a tank can do onto their healthbar.
+This addon is an ElvUI plugin which adds the potential amount of self-healing a tank can do onto their healthbar.
 
 ![alt text](https://imgur.com/Q4xQXeE.png "TankHealth illustrative image")
 
