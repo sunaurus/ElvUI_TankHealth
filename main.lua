@@ -135,10 +135,10 @@ function TH:Override(event, unit)
     UpdateBar(hp.myBar, maxHealth, myIncomingHeal)
     UpdateBar(hp.otherbar, maxHealth, otherIncomingHeal)
     UpdateBar(hp.absorbBar, maxHealth, totalAbsorb)
---    UpdateBar(hp.healAbsorbBar, maxHealth, myCurrentHealAbsorb)
+    UpdateBar(hp.healAbsorbBar, maxHealth, myCurrentHealAbsorb)
     UpdateBar(hp.tankHealBar, maxHealth, tankHeal)
 
-    TH:UpdateHealComm()
+    TH:UpdateHealComm(myIncomingHeal, otherIncomingHeal, totalAbsorb, tankHeal)
 end
 
 function TH:Construct()
@@ -155,8 +155,13 @@ function TH:Construct()
     return tankHealBar
 end
 
-local function UpdateFillBar(frame, previousTexture, bar)
+local function UpdateFillBar(frame, previousTexture, bar, amount)
     -- This is duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
+    if ( amount == 0 ) then
+        bar:Hide();
+        return previousTexture;
+    end
+
     local orientation = frame.Health:GetOrientation()
     bar:ClearAllPoints()
     if orientation == "HORIZONTAL" then
@@ -177,15 +182,15 @@ local function UpdateFillBar(frame, previousTexture, bar)
     return bar:GetStatusBarTexture();
 end
 
-function TH:UpdateHealComm()
+function TH:UpdateHealComm(myIncomingHeal, allIncomingHeal, totalAbsorb, tankHeal)
     -- This is also mostly duplicated code from ElvUI/Modules/unitframes/elements/healprediction.lua
     local frame = E.UnitFrames.player
     local previousTexture = frame.Health:GetStatusBarTexture();
 
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.myBar);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.otherBar);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.absorbBar);
-    UpdateFillBar(frame, previousTexture, frame.HealPrediction.tankHealBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.myBar, myIncomingHeal);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.otherBar, allIncomingHeal);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.absorbBar, totalAbsorb);
+    UpdateFillBar(frame, previousTexture, frame.HealPrediction.tankHealBar, tankHeal);
 end
 
 function TH:Configure()
