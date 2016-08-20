@@ -31,7 +31,7 @@ function TH:Calculate_Paladin()
 
     -- Check artifact traits
 
-    local artifactMulti = 1 + 0.1 * currentRank
+    local artifactMulti = GetArtifactMultiplier()
 
 
     -- Multiply everything
