@@ -32,16 +32,6 @@ function TH:Calculate_Druid()
     -- Life Cocoon
     local lcMulti = UnitBuff("player", GetSpellInfo(116849)) and 1.5 or 1
 
-    --T17
-    local t17Multi = 1
-    local t17n, _, _, t17s = UnitBuff("player", GetSpellInfo(177969))
-    if t17n then
-        t17Multi = 1 + t17s * 0.1
-    end
-
-    --T18
-    local t18Multi = UnitBuff("player", GetSpellInfo(192081)) and aura_env.GetNumSetPieces("T18") >= 2 and 1.2 or 1
-
     --T19
     local t19Multi = 1
     local t19n, _, _, t19s = UnitBuff("player", GetSpellInfo(211160))
