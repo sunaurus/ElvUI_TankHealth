@@ -52,28 +52,6 @@ function TH:InsertOptions()
     }
 end
 
-local function CalculateHeal()
-
-    local specIndex = GetSpecialization()
-    local specId = GetSpecializationInfo(specIndex)
-
-    local calcFuncs = {
-        [581] = TH.Calculate_DH,
-        [250] = TH.Calculate_DK,
-        [104] = TH.Calculate_Druid,
-        [268] = TH.Calculate_Monk,
-        [66] = TH.Calculate_Paladin,
-        [73] = TH.Calculate_Warrior
-    }
-    if calcFuncs[specId] then
-        -- Raid cooldown multiplier
-        local cdMulti = TH:GetCooldownMultiplier()
-        return calcFuncs[specId]() * cdMulti
-    else
-        return 0
-    end
-end
-
 local function UpdateBar(bar, maxHealth, val)
     if (bar) then
         bar:SetMinMaxValues(0, maxHealth)
@@ -127,7 +105,8 @@ function TH:Override(event, unit)
         myCurrentHealAbsorb = 0
     end
 
-    local tankHeal = min(maxHealth - health, (totalAbsorb + CalculateHeal()))
+    local cdMulti = TH:GetCooldownMultiplier()
+    local tankHeal = min(maxHealth - health, (totalAbsorb + hp.calcFunc() * cdMulti))
 
     --    print("tankHeal: " .. tankHeal)
     --    print("totalAbsorb + CalculateHeal(): " .. totalAbsorb + CalculateHeal())
@@ -266,20 +245,44 @@ function TH:TrackDamage(event, time, subevent, ...)
 
 end
 
+function TH:CheckSpec()
+    local p = E.UnitFrames.player
+
+    print("jou!")
+
+    local specIndex = GetSpecialization()
+    local specId = GetSpecializationInfo(specIndex)
+
+
+    local calcFuncs = {
+        [581] = TH.Calculate_DH,
+        [250] = TH.Calculate_DK,
+        [104] = TH.Calculate_Druid,
+        [268] = TH.Calculate_Monk,
+        [66] = TH.Calculate_Paladin,
+        [73] = TH.Calculate_Warrior
+    }
+    if calcFuncs[specId] then
+        p.HealPrediction.calcFunc = calcFuncs[specId]
+        p.HealPrediction.tankHealBar = TH.Construct()
+        p:RegisterEvent("UNIT_POWER", TH.Override)
+        if specId == 104 or specId == 250 then
+            TH.receivedDamage = {}
+            p:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", TH.TrackDamage)
+        end
+        TH:Configure()
+        TH:Update()
+        p.HealPrediction.Override = TH.Override
+    else
+        p.HealPrediction.Override = nil
+        p:UnregisterEvent("UNIT_POWER", TH.Override)
+        p:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", TH.TrackDamage)
+    end
+end
 
 function TH:Initialize()
-    local p = E.UnitFrames.player
-    p.HealPrediction.tankHealBar = TH.Construct()
-    p:RegisterEvent("UNIT_POWER", TH.Override)
-    local playerClass = select(2, UnitClass("player"))
-    if playerClass == "DRUID" or playerClass == "DEATHKNIGHT" then
-        TH.receivedDamage = {}
-        p:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", TH.TrackDamage)
-    end
-    TH:Configure()
-    TH:Update()
-    p.HealPrediction.Override = TH.Override
-
+    E.UnitFrames.player:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", TH.CheckSpec)
+    TH:CheckSpec()
     --Register plugin so options are properly inserted when config is loaded
     EP:RegisterPlugin(addonName, TH.InsertOptions)
 end
