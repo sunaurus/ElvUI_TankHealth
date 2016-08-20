@@ -1,3 +1,8 @@
+--Cache global variables
+local UnitBuff = UnitBuff
+local unpack = unpack
+local GetSpellInfo = GetSpellInfo
+
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
 
