@@ -104,6 +104,7 @@ function TH:InsertOptions()
                 type = "color",
                 hasAlpha = true,
                 name = "Healbar color",
+                desc = "Change the color of the potential self-heal on the healthbar.",
                 get = function(info)
                     local c = E.db.TankHealth.color
                     return c.r, c.g, c.b, c.a
@@ -118,6 +119,7 @@ function TH:InsertOptions()
                 order = 2,
                 type = "toggle",
                 name = "Show overheal",
+                desc = "Toggle expanding the potential amount healed past max health.",
                 get = function(info)
                     return E.db.TankHealth.overheal
                 end,
@@ -127,7 +129,7 @@ function TH:InsertOptions()
             },
             debug = {
                 name = "Show debug info",
-                desc = "Opens a window with helpful info for debugging purposes.",
+                desc = "Toggles a window with helpful info for debugging purposes.",
                 type = "toggle",
                 order = 3,
                 get = function(info)
