@@ -394,7 +394,7 @@ E:RegisterModule(TH:GetName()) --Register the module with ElvUI. ElvUI will now 
 
 -- slash commands
 
-SLASH_TANKHEALTH1, SLASH_TANKHEALTH2 = "/th", "tankhealth";
+SLASH_TANKHEALTH1, SLASH_TANKHEALTH2 = "/th", "/tankhealth";
 function SlashCmdList.TANKHEALTH(msg, editbox)
     if msg == "debug" then
         ToggleDebug()
