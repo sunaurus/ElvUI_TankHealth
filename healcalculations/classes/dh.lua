@@ -51,10 +51,9 @@ function TH:Calculate_DH()
 
     -- Soul Cleave healing
 
-    -- Soul cleave heals for 1098% of AP
-    local healMulti = 10.98
+    local baseHeal = 2 * AP * 5.5
 
-    local cleaveHeal = AP * healMulti * versatilityMulti * (min(60, pain) / 60) * artifactMulti
+    local cleaveHeal = baseHeal * versatilityMulti * (min(60, pain) / 60) * artifactMulti
     --    local cleaveHealMax = AP * healMulti * versatilityMulti * artifactMulti
 
     -- Total healing
