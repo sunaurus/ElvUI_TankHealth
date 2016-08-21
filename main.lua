@@ -5,7 +5,7 @@ local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitGUID = UnitGUID
-local min, max = math.min, math.max
+local min, max, floor = math.min, math.max, math.floor
 local select, unpack = select, unpack
 local CreateFrame = CreateFrame
 local GetSpecialization = GetSpecialization
@@ -16,6 +16,7 @@ local GetSpellInfo = GetSpellInfo
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:NewModule("TankHealth", "AceHook-3.0", "AceEvent-3.0", "AceTimer-3.0"); --Create a plugin within ElvUI and adopt AceHook-3.0, AceEvent-3.0 and AceTimer-3.0. We can make use of these later.
 local EP = LibStub("LibElvUIPlugin-1.0") --We can use this to automatically insert our GUI tables when ElvUI_Config is loaded.
+local AceGUI = LibStub("AceGUI-3.0")
 local addonName, addonTable = ... --See http://www.wowinterface.com/forums/showthread.php?t=51502&p=304704&postcount=2
 
 --Default options
@@ -24,10 +25,56 @@ P["TankHealth"] = {
     ["overheal"] = false,
 }
 
+local debug
+local function CreateDebugWindow()
+
+    local function CreateText(name, label)
+        debug[name] = AceGUI:Create("Label")
+        debug[name].textLabel = label
+        debug[name]:SetWidth(340)
+        debug[name].SetAmount = function(amount)
+            debug[name]:SetText(debug[name].textLabel .. ": " .. amount)
+        end
+        debug[name].SetAmount(0)
+        debug:AddChild(debug[name])
+    end
+
+    if not debug then
+
+        debug = AceGUI:Create("Frame")
+        debug:SetTitle("TankHealth")
+        debug:SetStatusText("ElvUI_TankHealth Debug info")
+        debug:SetCallback("OnClose", function(widget)
+            debug = nil
+            E.db.TankHealth.debug = false
+            AceGUI:Release(widget)
+        end)
+        debug:SetLayout("List")
+        debug:SetPoint("LEFT");
+
+        debug:SetWidth(360)
+        debug:SetHeight(180)
+
+        CreateText("myIncomingHeal", "My incoming heal")
+        CreateText("otherIncomingHeal", "Other incoming heal")
+        CreateText("totalAbsorb", "Total absorb")
+        CreateText("myCurrentHealAbsorb", "My current heal absorb")
+        CreateText("tankHeal", "Potential tank self-heal")
+        CreateText("tankHealOver", "Potential tank self-heal (with overheal)")
+    end
+end
+
 --Function we can call when a setting changes.
 function TH:Update()
-    local c = E.db.TankHealth.color
+    local db = E.db.TankHealth
+    local c = db.color
     E.UnitFrames.player.HealPrediction.tankHealBar:SetStatusBarColor(c.r, c.g, c.b, c.a)
+    if db.debug then
+        CreateDebugWindow()
+    elseif debug then
+        AceGUI:Release(debug)
+        debug = nil
+    end
 end
 
 --This function inserts our GUI table into the ElvUI Config. You can read about AceConfig here: http://www.wowace.com/addons/ace3/pages/ace-config-3-0-options-tables/
@@ -61,6 +108,19 @@ function TH:InsertOptions()
                 end,
                 set = function(info, value)
                     E.db.TankHealth.overheal = value
+                end,
+            },
+            debug = {
+                name = "Show debug info",
+                desc = "Opens a window with helpful info for debugging purposes.",
+                type = "toggle",
+                order = 3,
+                get = function(info)
+                    return E.db.TankHealth.debug
+                end,
+                set = function(info, value)
+                    E.db.TankHealth.debug = value
+                    TH:Update()
                 end,
             },
         },
@@ -124,19 +184,26 @@ function TH:Override(event, unit)
 
     local cdMulti = TH:GetCooldownMultiplier()
 
-    local tankHeal = totalAbsorb + hp.calcFunc() * cdMulti
+    local tankHealOver = floor(totalAbsorb + hp.calcFunc() * cdMulti)
+    local tankHeal = min(maxHealth - health, tankHealOver) -- remove overheal
 
-    if not E.db.TankHealth.overheal then
-        tankHeal = min(maxHealth - health, tankHeal)
+
+    if debug then
+        debug.myIncomingHeal.SetAmount(myIncomingHeal)
+        debug.otherIncomingHeal.SetAmount(otherIncomingHeal)
+        debug.totalAbsorb.SetAmount(totalAbsorb)
+        debug.myCurrentHealAbsorb.SetAmount(myCurrentHealAbsorb)
+        debug.tankHeal.SetAmount(tankHeal)
+        debug.tankHealOver.SetAmount(tankHealOver)
     end
-
-    --    print("tankHeal: " .. tankHeal)
-    --    print("totalAbsorb + CalculateHeal(): " .. totalAbsorb + CalculateHeal())
 
     UpdateBar(hp.myBar, maxHealth, myIncomingHeal)
     UpdateBar(hp.otherbar, maxHealth, otherIncomingHeal)
     UpdateBar(hp.absorbBar, maxHealth, totalAbsorb)
     UpdateBar(hp.healAbsorbBar, maxHealth, myCurrentHealAbsorb)
+    if E.db.TankHealth.overheal then
+        tankHeal = tankHealOver
+    end
     UpdateBar(hp.tankHealBar, maxHealth, tankHeal)
 
     TH:UpdateHealComm()
