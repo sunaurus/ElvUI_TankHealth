@@ -6,11 +6,12 @@ local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitGUID = UnitGUID
 local min, max, floor = math.min, math.max, math.floor
-local select, unpack = select, unpack
+local select, unpack, print = select, unpack, print
 local CreateFrame = CreateFrame
 local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellInfo = GetSpellInfo
+local SlashCmdList = SlashCmdList
 
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
@@ -25,7 +26,10 @@ P["TankHealth"] = {
     ["overheal"] = false,
 }
 
+local title = "|cff00b3ffTankHealth|r"
+
 local debug
+
 local function CreateDebugWindow()
 
     local function CreateText(name, label)
@@ -64,6 +68,17 @@ local function CreateDebugWindow()
     end
 end
 
+
+local function ToggleDebug()
+    if debug then
+        E.db.TankHealth.debug = false
+    else
+        E.db.TankHealth.debug = true
+    end
+    TH:Update()
+end
+
+
 --Function we can call when a setting changes.
 function TH:Update()
     local db = E.db.TankHealth
@@ -82,7 +97,7 @@ function TH:InsertOptions()
     E.Options.args.TankHealth = {
         order = 100,
         type = "group",
-        name = "|cff00b3ffTankHealth|r",
+        name = title,
         args = {
             color = {
                 order = 1,
@@ -374,3 +389,16 @@ function TH:Initialize()
 end
 
 E:RegisterModule(TH:GetName()) --Register the module with ElvUI. ElvUI will now call TankHealth:Initialize() when ElvUI is ready to load our plugin.
+
+-- slash commands
+
+SLASH_TANKHEALTH1, SLASH_TANKHEALTH2 = "/th", "tankhealth";
+function SlashCmdList.TANKHEALTH(msg, editbox)
+    if msg == "debug" then
+        ToggleDebug()
+    else
+        print(title .. " " .. GetAddOnMetadata("ElvUI_TankHealth", "Version"))
+        print("Commands:")
+        print("'/th debug' - Toggles a debug window with internal data")
+    end
+end
