@@ -367,7 +367,9 @@ function TH:CheckSpec()
     }
     if calcFuncs[specId] then
         p.HealPrediction.calcFunc = calcFuncs[specId]
-        p.HealPrediction.tankHealBar = TH.Construct()
+        if not p.HealPrediction.tankHealBar then
+            p.HealPrediction.tankHealBar = TH.Construct()
+        end
         p:RegisterEvent("UNIT_POWER", TH.Override)
         if specId == 104 or specId == 250 then
             TH.receivedDamage = {}
