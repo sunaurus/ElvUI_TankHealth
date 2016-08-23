@@ -12,6 +12,7 @@ local GetSpecialization = GetSpecialization
 local GetSpecializationInfo = GetSpecializationInfo
 local GetSpellInfo = GetSpellInfo
 local SlashCmdList = SlashCmdList
+local GetAddOnMetadata = GetAddOnMetadata
 
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
