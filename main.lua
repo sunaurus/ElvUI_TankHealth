@@ -129,7 +129,7 @@ function TH:InsertOptions()
             },
             debug = {
                 name = "Show debug info",
-                desc = "Toggles a window with helpful info for debugging purposes.",
+                desc = "Toggles a window with helpful info for debugging purposes. Can also be opened with the command '/th debug'",
                 type = "toggle",
                 order = 3,
                 get = function(info)
