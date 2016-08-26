@@ -4,11 +4,13 @@
 --Cache global variables
 local UnitPower = UnitPower
 local UnitBuff = UnitBuff
+local UnitHealthMax = UnitHealthMax
 local unpack, time, pairs = unpack, time, pairs
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetSpellInfo = GetSpellInfo
 local GetVersatilityBonus = GetVersatilityBonus
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
+local max = math.max
 
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
@@ -47,6 +49,9 @@ function TH:Calculate_DK()
 
     local totalHeal = (receivedDamage / 5) * versatilityMulti * vampMulti
 
-    return totalHeal
 
+    -- Minimum heal is 10% of max health
+    local maxHP = UnitHealthMax("player")
+
+    return max(totalHeal, maxHP * 0.1)
 end
