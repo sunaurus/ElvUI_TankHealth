@@ -7,9 +7,6 @@ local GetSpellInfo = GetSpellInfo
 local E, L, V, P, G = unpack(ElvUI); --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 local TH = E:GetModule("TankHealth");
 
--- Cache Globals
-local UnitBuff = UnitBuff
-
 function TH:GetCooldownMultiplier()
 
     if select(2, UnitClass("player")) == "WARRIOR" then
