@@ -5,9 +5,10 @@
 local UnitPower = UnitPower
 local UnitHealthMax = UnitHealthMax
 local UnitBuff = UnitBuff
-local unpack, time, pairs = unpack, time, pairs
+local unpack, time, pairs, select = unpack, time, pairs, select
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetSpellInfo = GetSpellInfo
+local GetSpellCooldown = GetSpellCooldown
 local GetMastery = GetMastery
 local GetVersatilityBonus = GetVersatilityBonus
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
@@ -24,7 +25,10 @@ end
 function TH:Calculate_Druid()
 
     local rage = UnitPower("player")
-    if rage < 10 then
+
+    local cd = select(2, GetSpellCooldown(22842))
+
+    if rage < 10 or cd > 0 then
         return 0
     end
 

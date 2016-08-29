@@ -12,6 +12,7 @@ local max, min = math.max, math.min
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetTalentInfo = GetTalentInfo
 local GetSpellInfo = GetSpellInfo
+local GetSpellCooldown = GetSpellCooldown
 local GetVersatilityBonus = GetVersatilityBonus
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
 
@@ -28,7 +29,10 @@ end
 function TH:Calculate_Warrior()
     --Rage
     local rage = UnitPower("player")
-    if rage < 20 then
+
+    local cd = select(2, GetSpellCooldown(190456))
+
+    if rage < 20 or cd > 0 then
         return 0
     end
     local minRage, maxRage = 20, 60

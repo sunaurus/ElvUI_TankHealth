@@ -9,6 +9,7 @@ local select, unpack = select, unpack
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetTalentInfo = GetTalentInfo
 local GetSpellInfo = GetSpellInfo
+local GetSpellCooldown = GetSpellCooldown
 local GetVersatilityBonus = GetVersatilityBonus
 local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
 
@@ -22,6 +23,14 @@ local function GetArtifactMultiplier()
 end
 
 function TH:Calculate_Paladin()
+
+    local lcd = select(2, GetSpellCooldown(184092))
+    local hcd = select(2, GetSpellCooldown(213652))
+
+    if lcd > 0 or hcd > 0 then
+        return 0
+    end
+
     -- Get missing hp percentage
     local curHP = UnitHealth("player")
     local maxHP = UnitHealthMax("player")
