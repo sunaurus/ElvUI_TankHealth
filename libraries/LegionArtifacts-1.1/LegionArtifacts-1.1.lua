@@ -148,6 +148,7 @@ function LA:GetPowerInfo(powerID,artifactID)
    if not artifactID then
       if HasArtifactEquipped() then
          local itemID = GetInventoryItemID("player", 16)
+         if not artifact[itemID] then return false end
          if artifact[itemID][powerID] then
             powerInfo = artifact[itemID][powerID]
          end
