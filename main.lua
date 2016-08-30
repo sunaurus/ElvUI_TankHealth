@@ -202,7 +202,7 @@ function TH:Override(event, unit)
 
     local cdMulti = TH:GetCooldownMultiplier()
 
-    local tankHealOver = floor(totalAbsorb + hp.calcFunc() * cdMulti)
+    local tankHealOver = floor(hp.calcFunc() * cdMulti)
     local tankHeal = min(maxHealth - health - totalAbsorb, tankHealOver) -- remove overheal
 
 
