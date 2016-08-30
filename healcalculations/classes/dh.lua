@@ -17,8 +17,8 @@ local TH = E:GetModule("TankHealth");
 
 
 local function GetArtifactMultiplier()
-    local devourSoulsRank = TH:GetArtifactTraitRank(1233)
-    local tormentedSoulsRank = TH:GetArtifactTraitRank(1328)
+    local devourSoulsRank = TH:GetArtifactTraitRank(212821)
+    local tormentedSoulsRank = TH:GetArtifactTraitRank(214744)
     -- Devour souls multiplier is 3% * rank
     local multiplier = 1 + devourSoulsRank * 0.03
     -- Tormented Souls multiplier is 10% * rank
