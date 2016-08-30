@@ -7,11 +7,7 @@ local LA = LibStub("LegionArtifacts-1.1")
 
 function TH:GetArtifactTraitRank(traitId)
     local info = LA:GetPowerInfo(traitId)
-    if info then
-        return select(3, info)
-    else
-        return 0
-    end
+    return select(3, info) or 0
 end
 
 
