@@ -18,8 +18,8 @@ local TH = E:GetModule("TankHealth");
 
 local function GetArtifactMultiplier()
     local scatterTheShadowsRank = TH:GetArtifactTraitRank(209223)
-    -- Scatter the Shadows multiplier is 10% * rank
-    return 1 + scatterTheShadowsRank * 0.1
+    -- Scatter the Shadows multiplier is 6% * rank
+    return 1 + scatterTheShadowsRank * 0.06
 end
 
 function TH:Calculate_Paladin()
@@ -36,8 +36,8 @@ function TH:Calculate_Paladin()
     local maxHP = UnitHealthMax("player")
     local missingHp = maxHP - curHP
 
-    -- LOTP heals for 35% of missing health
-    local healMulti = 0.35
+    -- LOTP heals for 30% of missing health
+    local healMulti = 0.30
 
     -- Stat multipliers
     local versatility = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
