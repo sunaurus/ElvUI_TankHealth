@@ -52,7 +52,7 @@ function TH:Calculate_Warrior()
     local artifactMulti = GetArtifactMultiplier()
 
     --Dragon Scales
-    local scalesMulti = UnitBuff("player", GetSpellInfo(203581)) and 1.4 or 1
+    local scalesMulti = UnitBuff("player", GetSpellInfo(203581)) and 1.6 or 1
 
     --Never Surrender
     local curHP = UnitHealth("player")
@@ -67,7 +67,7 @@ function TH:Calculate_Warrior()
     local curIP = select(17, UnitBuff("player", GetSpellInfo(190456))) or 0
     curIP = curIP / 0.9 --get the tooltip value instead of the absorb
 
-    local maxIP = AP * 28 * versatilityMulti * indomMulti
+    local maxIP = AP * 18.6 * versatilityMulti * indomMulti
 
     local newIP = maxIP * (calcRage / maxRage) * artifactMulti * scalesMulti * nevSurMulti
 
