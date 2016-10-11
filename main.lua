@@ -229,14 +229,9 @@ end
 
 function TH:Construct()
 
-    local tankHealBar = CreateFrame("StatusBar", nil, E.UnitFrames.player)
+    local tankHealBar = CreateFrame("StatusBar", nil, E.UnitFrames.player.Health)
     tankHealBar:SetStatusBarTexture(E["media"].blankTex)
-    tankHealBar:SetFrameLevel(E.UnitFrames.player.Health:GetFrameLevel() - 2)
     tankHealBar:Hide()
-
-    if E.UnitFrames.player.Health then
-        tankHealBar:SetParent(E.UnitFrames.player.Health)
-    end
 
     return tankHealBar
 end
@@ -289,7 +284,7 @@ function TH:Configure()
         end
 
         if not frame.USE_PORTRAIT_OVERLAY then
-            healPrediction.tankHealBar:SetParent(frame)
+            healPrediction.tankHealBar:SetParent(frame.Health)
         else
             healPrediction.tankHealBar:SetParent(frame.Portrait.overlay)
         end
