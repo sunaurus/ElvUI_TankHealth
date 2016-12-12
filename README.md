@@ -1,3 +1,5 @@
+***This addon is no longer maintained as I no longer have an active WoW subscription.***
+
 # TankHealth
 
 This addon is an ElvUI plugin which adds the potential amount of self-healing a tank can do onto their healthbar.
