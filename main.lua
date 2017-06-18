@@ -84,7 +84,7 @@ end
 function TH:Update()
     local db = E.db.TankHealth
     local c = db.color
-    E.UnitFrames.player.HealPrediction.tankHealBar:SetStatusBarColor(c.r, c.g, c.b, c.a)
+    E.UnitFrames.player.HealthPrediction.tankHealBar:SetStatusBarColor(c.r, c.g, c.b, c.a)
     if db.debug then
         CreateDebugWindow()
     elseif debug then
@@ -159,7 +159,7 @@ function TH:Override(event, unit)
     -- Most of this is duplicated code from oUF/elements/healprediction.lua
     if (self.unit ~= unit) or not unit then return end
 
-    local hp = self.HealPrediction
+    local hp = self.HealthPrediction
     hp.parent = self
 
     local myIncomingHeal = UnitGetIncomingHeals(unit, "player") or 0
@@ -268,15 +268,16 @@ function TH:UpdateHealComm()
     local frame = E.UnitFrames.player
     local previousTexture = frame.Health:GetStatusBarTexture();
 
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.myBar);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.otherBar);
-    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealPrediction.absorbBar);
-    UpdateFillBar(frame, previousTexture, frame.HealPrediction.tankHealBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealthPrediction.myBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealthPrediction.otherBar);
+    previousTexture = UpdateFillBar(frame, previousTexture, frame.HealthPrediction.absorbBar);
+    UpdateFillBar(frame, previousTexture, frame.HealthPrediction.tankHealBar);
 end
 
 function TH:Configure()
     local frame = E.UnitFrames.player
-    local healPrediction = frame.HealPrediction
+    local healPrediction = frame.HealthPrediction
+    
 
     if frame.db.healPrediction then
         if not frame:IsElementEnabled("HealPrediction") then
@@ -362,9 +363,9 @@ function TH:CheckSpec()
         [73] = TH.Calculate_Warrior
     }
     if calcFuncs[specId] then
-        p.HealPrediction.calcFunc = calcFuncs[specId]
-        if not p.HealPrediction.tankHealBar then
-            p.HealPrediction.tankHealBar = TH.Construct()
+        p.HealthPrediction.calcFunc = calcFuncs[specId]
+        if not p.HealthPrediction.tankHealBar then
+            p.HealthPrediction.tankHealBar = TH.Construct()
         end
         p:RegisterEvent("UNIT_POWER", TH.Override)
         if specId == 104 or specId == 250 then
@@ -373,9 +374,9 @@ function TH:CheckSpec()
         end
         TH:Configure()
         TH:Update()
-        p.HealPrediction.Override = TH.Override
+        p.HealthPrediction.Override = TH.Override
     else
-        p.HealPrediction.Override = nil
+        p.HealthPrediction.Override = nil
         p:UnregisterEvent("UNIT_POWER", TH.Override)
         p:UnregisterEvent("COMBAT_LOG_EVENT_UNFILTERED", TH.TrackDamage)
     end
