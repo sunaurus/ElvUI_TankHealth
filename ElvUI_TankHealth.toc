@@ -1,6 +1,6 @@
-## Interface: 70100
+## Interface: 70200
 ## Author: Sunaurus
-## Version: 1.12
+## Version: 1.13
 ## Title: |cff1784d1ElvUI|r |cff00b3ffTankHealth|r
 ## Notes: ElvUI Plugin for displaying the potential heal from Soul Cleave on your health bar.
 ## RequiredDeps: ElvUI
